@@ -23,7 +23,7 @@ if (!IS_PRODUCTION) {
     appType: "custom",
     base: "/",
   });
-  console.log("[DEV MODE] ::: Success to create vite server.", vite);
+  console.log("[DEV MODE] ::: Success to create vite server.");
   app.use(vite.middlewares);
 } else {
   // 배포 모드일 때 (NODE_ENV === "production")
@@ -31,7 +31,12 @@ if (!IS_PRODUCTION) {
   const sirv = (await import("sirv")).default;
   app.use(compression());
   app.use("/", sirv("./dist/client", { extensions: [] }));
+  console.log("[PRODUCTION MODE] ::: Success to serve static files.");
 }
+
+app.get("/api/test", (req, res) => {
+  return res.json({ result: true });
+});
 
 // 사용자가 api 요청 혹은, url을 통해서 페이지 접근 시 응답해주는 코드
 app.use("*", async (req, res) => {
@@ -51,6 +56,7 @@ app.use("*", async (req, res) => {
     }
 
     const rendered = await render(url, ssrManifest);
+    console.log(rendered.seoHead(req.originalUrl));
     const html = template
       .replace("<!--app-head-->", rendered.seoHead(req.originalUrl))
       .replace("<!--app-html-->", rendered.html(req.originalUrl));
