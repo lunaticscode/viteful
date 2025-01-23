@@ -26,7 +26,6 @@ const useChangeSeoHead = () => {
     );
   };
   useEffect(() => {
-    console.log(window);
     if (window !== undefined) {
       changeSeoHead(location.pathname);
     }
