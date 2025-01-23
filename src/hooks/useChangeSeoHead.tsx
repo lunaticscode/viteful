@@ -1,4 +1,4 @@
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import SeoHead from "../components/SeoHead";
 import ReactDOMServer from "react-dom/server";
 import { useLocation } from "react-router-dom";
@@ -25,8 +25,11 @@ const useChangeSeoHead = () => {
       document.head.append(newSeoElem)
     );
   };
-  useLayoutEffect(() => {
-    changeSeoHead(location.pathname);
+  useEffect(() => {
+    console.log(window);
+    if (window !== undefined) {
+      changeSeoHead(location.pathname);
+    }
   }, [location.pathname]);
 };
 export default useChangeSeoHead;
