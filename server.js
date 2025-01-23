@@ -35,7 +35,9 @@ if (!IS_PRODUCTION) {
 }
 
 app.get("/api/test", (req, res) => {
-  return res.json({ result: true });
+  return res
+    .set({ "Cache-Control": "public, max-age=10" })
+    .json({ data: new Date().getTime() });
 });
 
 // 사용자가 api 요청 혹은, url을 통해서 페이지 접근 시 응답해주는 코드
@@ -65,6 +67,7 @@ app.use("*", async (req, res) => {
       .status(200)
       .set({
         "Content-Type": "text/html",
+        "Cache-Control": "public, max-age=1231231231",
       })
       .end(html);
   } catch (err) {
